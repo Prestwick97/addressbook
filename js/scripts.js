@@ -38,10 +38,17 @@ AddressBook.prototype.deleteContact = function(id) {
 }
 
 // Business Logic for Contacts ---------
-function Contact(firstName, lastName, phoneNumber) {
+function Contact(firstName, lastName, phoneNumber, email, Address ) {
   this.firstName = firstName,
   this.lastName = lastName,
-  this.phoneNumber = phoneNumber
+  this.phoneNumber = phoneNumber,
+  this.email = email,
+  this.Address = Address
+}
+function Address(work, home, remote) {
+  this.work = work,
+  this.home = home,
+  this.remote = remote
 }
 
 Contact.prototype.fullName = function() {
@@ -66,6 +73,10 @@ function showContact(contactId) {
   $(".first-name").html(contact.firstName);
   $(".last-name").html(contact.lastName);
   $(".phone-number").html(contact.phoneNumber);
+  $(".email-address").html(contact.email);
+  $(".home").html(contact.Address.home);
+  $(".work").html(contact.Address.work);
+  $(".remote").html(contact.Address.remote);
   var buttons = $("#buttons");
   buttons.empty();
   buttons.append("<button class='deleteButton' id=" +  + contact.id + ">Delete</button>");
@@ -87,7 +98,6 @@ function attachContactListeners() {
 
 
 
-
 $(document).ready(function() {
   attachContactListeners();
   $("form#new-contact").submit(function(event) {
@@ -95,13 +105,59 @@ $(document).ready(function() {
     var inputtedFirstName = $("input#new-first-name").val();
     var inputtedLastName = $("input#new-last-name").val();
     var inputtedPhoneNumber = $("input#new-phone-number").val();
+    var inputtedEmail = $("input#new-email-address").val();
+    var inputtedWork = $("input#new-work").val();
+    var inputtedHome = $("input#new-home").val();
+    var inputtedRemote = $("input#new-remote").val();
 
     $("input#new-first-name").val("");
     $("input#new-last-name").val("");
     $("input#new-phone-number").val("");
+    $("input#new-email-address").val("");
+    $("input#new-work").val("");
+    $("input#new-home").val("");
+    $("input#new-remote").val("");
 
-    var newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber);
+    function removeEmptyFields() {
+      if(inputtedFirstName === "") {
+        $("#1").remove();  
+      }
+      if(inputtedLastName === ""){
+        $("#2").remove();
+      }
+       if(inputtedPhoneNumber === ""){
+        $("#3").remove();
+      }
+       if(inputtedEmail === ""){
+        $("#4").remove();
+      }
+       if(inputtedWork === ""){
+        $("#5").remove();
+      }
+       if(inputtedHome === ""){
+        $("#6").remove();
+      }
+       if(inputtedRemote === ""){
+        $("#7").remove();
+      }
+    };
+    
+
+    removeEmptyFields();
+
+    var inputtedAddress = new Address(inputtedWork, inputtedHome, inputtedRemote);
+
+    var newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmail, inputtedAddress)
     addressBook.addContact(newContact);
     displayContactDetails(addressBook);
+    
+  
+    // if ("span" === "" ) {
+    //   $(this).parent('p').remove();
+    // }
+    // $( 'span:empty' ).remove($(this).parent('p'));
+
   })
+
+
 })
